@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Конструктор видо-типичного рациона для кота на 7 дней">
+    <title>Конструктор рациона для кота 🐱</title>
+    <link rel="stylesheet" href="diet-premium.css?v=1768176500">
+</head>
+
+<body class="diet-page">
+    <!-- Шапка с настройками -->
+    <header class="diet-header">
+        <a href="index.html" class="back-button">← Назад</a>
+        <h1 class="page-title">🐱 Конструктор рациона для кота</h1>
+        <div class="header-controls">
+            <div class="cat-weight-container">
+                <label for="cat-weight">Вес кота (кг):</label>
+                <input type="number" id="cat-weight" min="1" max="20" step="0.1" value="4.5" placeholder="4.5">
+            </div>
+            <div class="health-condition-container">
+                <label for="portion-percent">Норма (%):</label>
+                <select id="portion-percent">
+                    <option value="0.02">2% (Малоактивный/Диета)</option>
+                    <option value="0.03">3% (Средняя активность)</option>
+                    <option value="0.04">4% (Высокая активность)</option>
+                    <option value="0.05" selected>5% (Стандарт для взрослых)</option>
+                    <option value="0.07">7% (Котята/Подростки)</option>
+                    <option value="0.10">10% (Растущий организм)</option>
+                </select>
+            </div>
+            <div class="health-condition-container">
+                <label for="health-condition">Здоровье:</label>
+                <select id="health-condition">
+                    <option value="healthy">Здоров</option>
+                    <option value="urolithiasis">Мочекаменная болезнь</option>
+                    <option value="kidney">Болезни почек</option>
+                    <option value="diabetes">Диабет</option>
+                    <option value="obesity">Ожирение</option>
+                    <option value="allergies">Аллергии</option>
+                    <option value="digestive">Проблемы ЖКТ</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Панель управления -->
+    <div class="control-panel">
+        <div class="control-buttons">
+            <button class="control-btn" onclick="showRecommendations()">
+                💡 Рекомендации
+            </button>
+            <button class="control-btn" onclick="showHistory()">
+                📊 История
+            </button>
+            <button class="control-btn" onclick="exportToPDF()">
+                📄 Экспорт в PDF
+            </button>
+            <button class="control-btn" onclick="exportToJSON()">
+                💾 Сохранить JSON
+            </button>
+            <button class="control-btn chatbot-toggle" onclick="toggleChatbot()">
+                💬 Чат-помощник
+            </button>
+            <button class="control-btn" onclick="showAbout()">
+                ℹ️ О проекте
+            </button>
+        </div>
+        <div class="recommendations-banner" id="recommendations-banner" style="display: none;">
+            <!-- Рекомендации будут добавлены через JS -->
+        </div>
+    </div>
+
+    <!-- Основной контейнер -->
+    <div class="diet-container">
+        <!-- Левая часть: 7 дней недели -->
+        <div class="days-section">
+            <div class="section-header-flex">
+                <h2 class="section-title">📅 План питания (Месяц)</h2>
+                <div class="week-selector">
+                    <button class="week-btn active" onclick="changeWeek(1)">Неделя 1</button>
+                    <button class="week-btn" onclick="changeWeek(2)">Неделя 2</button>
+                    <button class="week-btn" onclick="changeWeek(3)">Неделя 3</button>
+                    <button class="week-btn" onclick="changeWeek(4)">Неделя 4</button>
+                </div>
+            </div>
+
+            <div class="supplements-section-inline">
+                <label>Добавки (БАДы):</label>
+                <div id="supplements-chips" class="supplements-chips">
+                    <!-- Будут добавлены через JS -->
+                </div>
+            </div>
+
+            <div class="days-grid">
+                <!-- День 1 -->
+                <div class="day-card" data-day="1">
+                    <div class="day-header">
+                        <h3>Понедельник</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator" title="Баланс 80:10:10 (Мясо:Кости:Органы)">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="1">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 2 -->
+                <div class="day-card" data-day="2">
+                    <div class="day-header">
+                        <h3>Вторник</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="2">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 3 -->
+                <div class="day-card" data-day="3">
+                    <div class="day-header">
+                        <h3>Среда</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="3">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 4 -->
+                <div class="day-card" data-day="4">
+                    <div class="day-header">
+                        <h3>Четверг</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="4">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 5 -->
+                <div class="day-card" data-day="5">
+                    <div class="day-header">
+                        <h3>Пятница</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="5">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 6 -->
+                <div class="day-card" data-day="6">
+                    <div class="day-header">
+                        <h3>Суббота</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="6">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+
+                <!-- День 7 -->
+                <div class="day-card" data-day="7">
+                    <div class="day-header">
+                        <h3>Воскресенье</h3>
+                        <div class="day-stats">
+                            <span class="total-weight">0 г</span>
+                            <span class="weight-status">○</span>
+                        </div>
+                    </div>
+                    <div class="day-balance-indicator">
+                        <div class="balance-bar">
+                            <div class="bar-part meat" style="width: 0%"></div>
+                            <div class="bar-part bone" style="width: 0%"></div>
+                            <div class="bar-part organ" style="width: 0%"></div>
+                        </div>
+                        <div class="balance-labels">
+                            <span class="meat-pct">0% М</span>
+                            <span class="bone-pct">0% К</span>
+                            <span class="organ-pct">0% О</span>
+                        </div>
+                    </div>
+                    <div class="day-products" data-day="7">
+                        <p class="empty-message">Перетащите продукты сюда</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая часть: Список продуктов -->
+        <div class="products-section">
+            <h2 class="section-title">🥩 Доступные продукты</h2>
+            <p class="section-description">Перетащите продукты в нужный день недели</p>
+            <div class="product-category-filters">
+                <button class="filter-btn active" onclick="filterProducts('all')">Все</button>
+                <button class="filter-btn" onclick="filterProducts('meat')">Мясо</button>
+                <button class="filter-btn" onclick="filterProducts('bone')">Кости</button>
+                <button class="filter-btn" onclick="filterProducts('organ')">Органы</button>
+            </div>
+            <div class="products-grid-scroll">
+                <div class="products-grid">
+                    <!-- Продукты будут добавлены через JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Рекомендации -->
+    <div id="recommendations-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('recommendations-modal')">&times;</span>
+            <h2>💡 Рекомендации по питанию</h2>
+            <div id="recommendations-content">
+                <!-- Контент будет добавлен через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: История -->
+    <div id="history-modal" class="modal">
+        <div class="modal-content large">
+            <span class="close-modal" onclick="closeModal('history-modal')">&times;</span>
+            <h2>📊 История изменений рациона</h2>
+            <div class="history-controls">
+                <button class="control-btn small" onclick="clearHistory()">🗑️ Очистить историю</button>
+            </div>
+            <div id="history-content">
+                <!-- Контент будет добавлен через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Аналоги продукта -->
+    <div id="alternatives-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('alternatives-modal')">&times;</span>
+            <h2>🔄 Аналоги продукта</h2>
+            <div id="alternatives-content">
+                <!-- Контент будет добавлен через JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно: О проекте -->
+    <div id="about-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('about-modal')">&times;</span>
+            <h2>ℹ️ О проекте</h2>
+            <div class="about-content">
+                <div class="recommendation-card">
+                    <h3>🐱 Конструктор видотипичного рациона для кота</h3>
+                    <p>Этот инструмент помогает составить сбалансированный план натурального питания для вашего питомца
+                        на основе современных принципов видотипичного кормления.</p>
+                </div>
+
+                <h3>📚 Источник информации</h3>
+                <p>Все рекомендации по питанию основаны на актуальных материалах проекта <strong><a
+                            href="https://catnutrition.ru" target="_blank" rel="noopener">CatNutrition.ru</a></strong> -
+                    ведущего русскоязычного ресурса о натуральном питании кошек.</p>
+
+                <div class="recommendation-card">
+                    <h4>🔬 Основные принципы (по catnutrition.ru):</h4>
+                    <ul>
+                        <li><strong>Видотипичное питание</strong> - максимально приближенное к рациону хищника в природе
+                        </li>
+                        <li><strong>Пирамида питания:</strong> 60% мясо, 20-40% кости (СЫРЫЕ!), 10-15% субпродукты, ~10%
+                            добавки</li>
+                        <li><strong>Баланс на протяжении времени</strong> - не в одной миске, а в течение недели</li>
+                        <li><strong>Суточная норма:</strong> 2-5% от веса (в среднем 5% для взрослых кошек)</li>
+                        <li><strong>Сырое мясо</strong> - заморозка 3+ дня убивает паразитов</li>
+                    </ul>
+                </div>
+
+                <div class="recommendation-card warning">
+                    <h4>⚠️ Критически важно:</h4>
+                    <ul>
+                        <li><strong>НИКОГДА вареные кости</strong> - они смертельно опасны!</li>
+                        <li>Контроль фосфора при ХПН важнее контроля белка</li>
+                        <li>Влажность пищи критически важна при МКБ и ХПН</li>
+                        <li>При диабете - менее 10% калорий из углеводов</li>
+                    </ul>
+                </div>
+
+                <h3>💻 Возможности конструктора:</h3>
+                <ul>
+                    <li>✅ Планирование рациона на 7 дней</li>
+                    <li>✅ Автоматический расчет суточной нормы (2-5% от веса)</li>
+                    <li>✅ Рекомендации для 7 состояний здоровья</li>
+                    <li>✅ История изменений рациона</li>
+                    <li>✅ Аналоги продуктов для замены</li>
+                    <li>✅ Чат-бот помощник с базой знаний</li>
+                    <li>✅ Экспорт в TXT и JSON</li>
+                    <li>✅ Автосохранение в браузере</li>
+                </ul>
+
+                <p
+                    style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #e2e8f0; color: #718096; font-size: 0.9rem;">
+                    <strong>Дисклеймер:</strong> Этот инструмент предназначен для информационных целей. Всегда
+                    консультируйтесь с ветеринаром перед изменением рациона вашего питомца, особенно при наличии
+                    заболеваний.
+                </p>
+
+                <p style="text-align: center; margin-top: 1rem; color: #a0aec0; font-size: 0.85rem;">
+                    Обновлено: 11 января 2025 | Данные: <a href="https://catnutrition.ru" target="_blank"
+                        rel="noopener">catnutrition.ru</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Чат-бот -->
+    <div id="chatbot-container" class="chatbot-container" style="display: none;">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <span class="chatbot-icon">🤖</span>
+                <span>Помощник по питанию</span>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="chatbot-message bot">
+                <div class="message-content">
+                    Привет! 👋 Я помогу вам с вопросами о питании вашего кота. Спрашивайте!
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-quick-questions">
+            <button class="quick-question" onclick="askQuestion('Сколько должен есть кот в день?')">
+                Сколько должен есть кот?
+            </button>
+            <button class="quick-question" onclick="askQuestion('Какие продукты нельзя давать?')">
+                Запрещенные продукты?
+            </button>
+            <button class="quick-question" onclick="askQuestion('Как часто кормить кота?')">
+                Частота кормления?
+            </button>
+        </div>
+        <div class="chatbot-input-container">
+            <input type="text" id="chatbot-input" placeholder="Задайте вопрос..."
+                onkeypress="handleChatKeyPress(event)" />
+            <button class="chatbot-send" onclick="sendChatMessage()">📤</button>
+        </div>
+    </div>
+
+    <script src="diet-script.js"></script>
+</body>
+
+</html>

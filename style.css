@@ -1,0 +1,147 @@
+/* Импорт современного шрифта из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+/* Сброс стандартных отступов и настройка базовых стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Стили для всей страницы */
+body {
+    font-family: 'Inter', sans-serif;
+    /* Градиентный фон от темно-синего к фиолетовому */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Страница занимает всю высоту экрана */
+    min-height: 100vh;
+    /* Убираем возможность прокрутки */
+    overflow: hidden;
+    /* Цвет текста */
+    color: #ffffff;
+}
+
+/* Контейнер для центрирования контента */
+.container {
+    /* Flexbox для идеального центрирования */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Занимает всю высоту и ширину экрана */
+    min-height: 100vh;
+    width: 100%;
+    /* Позиционирование для анимированного круга */
+    position: relative;
+    /* Отступы для мобильных устройств */
+    padding: 20px;
+}
+
+/* Главный заголовок */
+.title {
+    /* Очень крупный размер шрифта */
+    font-size: clamp(3rem, 10vw, 8rem);
+    font-weight: 700;
+    /* Прозрачный текст с градиентной обводкой */
+    background: linear-gradient(45deg, #ffffff, #e0e7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Тень для объема */
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* Анимация появления */
+    animation: fadeInUp 1s ease-out;
+    /* Отступ снизу */
+    margin-bottom: 1rem;
+    /* Выравнивание по центру */
+    text-align: center;
+}
+
+/* Подзаголовок */
+.subtitle {
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    opacity: 0.9;
+    /* Анимация с задержкой */
+    animation: fadeInUp 1s ease-out 0.3s backwards;
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+/* Кнопка призыва к действию */
+.cta-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #667eea;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    animation: fadeInUp 1s ease-out 0.6s backwards;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.cta-button:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 1);
+}
+
+.cta-button:active {
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Декоративный анимированный круг на фоне */
+.animation-circle {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    /* Полупрозрачный белый фон */
+    background: rgba(255, 255, 255, 0.1);
+    /* Размытие для эффекта glassmorphism */
+    backdrop-filter: blur(10px);
+    /* Круг находится позади текста */
+    z-index: -1;
+    /* Бесконечная анимация пульсации */
+    animation: pulse 3s ease-in-out infinite;
+}
+
+/* Анимация появления снизу вверх */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Анимация пульсации круга */
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.3;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.5;
+    }
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    .animation-circle {
+        width: 200px;
+        height: 200px;
+    }
+}

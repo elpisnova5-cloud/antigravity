@@ -1,0 +1,12 @@
+{
+  "name": "hello-world-project",
+  "version": "1.0.0",
+  "description": "Простой тестовый проект Hello World с локальным сервером",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080 -o"
+  },
+  "keywords": ["hello-world", "test", "antigravity"],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --primary: hsl(250, 80%, 60%);
+    --primary-alt: hsl(250, 80%, 50%);
+    --secondary: hsl(180, 75%, 40%);
+    --accent: hsl(15, 90%, 65%);
+
+    --meat: hsl(0, 84%, 60%);
+    --bone: hsl(210, 20%, 60%);
+    --organ: hsl(265, 80%, 60%);
+    --fish: hsl(200, 85%, 50%);
+    --supplement: hsl(150, 70%, 45%);
+
+    --bg-page: hsl(220, 33%, 98%);
+    --bg-card: hsla(0, 0%, 100%, 0.8);
+    --bg-glass: hsla(220, 30%, 96%, 0.4);
+
+    --text-head: hsl(220, 40%, 15%);
+    --text-body: hsl(220, 20%, 35%);
+    --text-light: hsl(220, 15%, 55%);
+
+    --border: hsla(220, 30%, 85%, 0.6);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-md: 0 12px 30px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.1);
+
+    --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: radial-gradient(circle at top right, hsla(250, 100%, 95%, 0.5), transparent),
+        radial-gradient(circle at bottom left, hsla(180, 100%, 95%, 0.5), transparent),
+        var(--bg-page);
+    background-attachment: fixed;
+    color: var(--text-body);
+    font-family: 'Outfit', -apple-system, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* Header Refinement */
+.diet-header {
+    background: hsla(0, 0%, 100%, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1.25rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.back-button {
+    color: var(--text-body);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background: var(--bg-glass);
+    padding: 0.6rem 1.4rem;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    transition: var(--transition);
+}
+
+.back-button:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    border-color: var(--primary);
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-head);
+    margin: 0;
+}
+
+/* Controls Refinement */
+.control-panel {
+    padding: 2.5rem 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.control-btn {
+    padding: 0.8rem 1.6rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text-head);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.control-btn:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.control-btn.chatbot-toggle {
+    background: linear-gradient(135deg, var(--primary), var(--primary-alt));
+    color: white;
+    border: none;
+    box-shadow: 0 10px 25px hsla(250, 80%, 60%, 0.3);
+}
+
+/* Main Layout */
+.diet-container {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 3rem;
+    padding: 0 3rem 5rem 3rem;
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* Day Cards */
+.days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 2.5rem;
+}
+
+.day-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.day-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-lg);
+}
+
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.day-header h3 {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-head);
+}
+
+.total-weight {
+    font-weight: 700;
+    color: var(--primary);
+    background: hsla(250, 80%, 60%, 0.08);
+    padding: 0.4rem 1rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+}
+
+/* Balance Display */
+.day-balance-indicator {
+    background: var(--bg-glass);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+}
+
+.balance-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--text-light);
+    margin-top: 0.8rem;
+}
+
+/* Product Entries */
+.day-product-item {
+    background: hsl(220, 30%, 98%);
+    padding: 1.1rem;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid transparent;
+    transition: var(--transition);
+}
+
+.day-product-item:hover {
+    background: white;
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Right Section: Products */
+.products-section {
+    background: hsla(0, 0%, 100%, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    position: sticky;
+    top: 100px;
+    height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-lg);
+}
+
+.filter-btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.filter-btn.active {
+    background: white;
+    color: var(--primary);
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Categories Styling (Refined) */
+.product-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1.25rem;
+    transition: var(--transition);
+    cursor: grab;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 0.8rem;
+}
+
+.product-card:hover {
+    transform: translateX(8px);
+    box-shadow: var(--shadow-md);
+}
+
+.product-card[data-category="meat"] {
+    background: linear-gradient(to right, hsla(0, 84%, 60%, 0.05), white);
+    border-left: 5px solid var(--meat);
+}
+
+.product-card[data-category="bone"] {
+    background: linear-gradient(to right, hsla(210, 20%, 60%, 0.05), white);
+    border-left: 5px solid var(--bone);
+}
+
+.product-card[data-category="organ"] {
+    background: linear-gradient(to right, hsla(265, 80%, 60%, 0.05), white);
+    border-left: 5px solid var(--organ);
+}
+
+.product-card[data-category="fish"] {
+    background: linear-gradient(to right, hsla(200, 85%, 50%, 0.05), white);
+    border-left: 5px solid var(--fish);
+}
+
+.product-card[data-category="supplement"] {
+    background: linear-gradient(to right, hsla(150, 70%, 45%, 0.05), white);
+    border-left: 5px solid var(--supplement);
+}
+
+.product-card-emoji {
+    font-size: 2.2rem;
+}
+
+.product-card-name {
+    font-weight: 700;
+    color: var(--text-head);
+    font-size: 1rem;
+}
+
+/* Modal Design */
+.modal-content {
+    background: hsla(0, 0%, 100%, 0.95);
+    backdrop-filter: blur(25px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Chatbot Design */
+.chatbot-container {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-lg);
+}
+
+.chatbot-header {
+    background: var(--primary);
+    padding: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1300px) {
+    .diet-container {
+        grid-template-columns: 1fr;
+    }
+
+    .products-section {
+        height: auto;
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .diet-header {
+        padding: 1.5rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .diet-container {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        text-align: center;
+    }
+}
