@@ -724,29 +724,7 @@ function exportToPDF() {
     alert('✅ Месячный рацион экспортирован!');
 }
 
-function exportToJSON() {
-    const data = {
-        catWeight,
-        portionPercent,
-        healthCondition,
-        monthPlan,
-        chosenSupplements,
-        exportDate: new Date().toISOString(),
-        version: '3.0'
-    };
 
-    const json = JSON.stringify(data, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `cat-diet-month-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-
-    addToHistory('export', 'Экспорт рациона в JSON');
-    alert('✅ Рацион сохранен в JSON!');
-}
 
 // ===== ЧАТ-БОТ =====
 function toggleChatbot() {
@@ -886,7 +864,7 @@ window.showRecommendations = showRecommendations;
 window.showHistory = showHistory;
 window.clearHistory = clearHistory;
 window.exportToPDF = exportToPDF;
-window.exportToJSON = exportToJSON;
+
 window.toggleChatbot = toggleChatbot;
 window.askQuestion = askQuestion;
 window.sendChatMessage = sendChatMessage;
