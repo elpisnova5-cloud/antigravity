@@ -1,4 +1,4 @@
-// Конструктор рациона для кота - Расширенная версия
+// Конструктор питания животных - Расширенная версия
 // С экспортом, рекомендациями, историей, аналогами и чат-ботом
 
 // ===== БАЗА ДАННЫХ ПРОДУКТОВ =====
@@ -39,8 +39,31 @@ const supplements = [
     { id: 'kelp', name: 'Ламинария (Йод)', emoji: '🌿', description: 'Для щитовидной железы' }
 ];
 
+// ===== ПРОФИЛИ ЖИВОТНЫХ =====
+const animalProfiles = {
+    cat: {
+        label: 'Кошка',
+        emoji: '🐱',
+        defaultWeight: 4.5,
+        note: 'Хищник: 2–5% веса в сутки, баланс 80/10/10.'
+    },
+    dog: {
+        label: 'Собака',
+        emoji: '🐶',
+        defaultWeight: 12,
+        note: 'Всеядный хищник: 2–4% веса, допускается до 10–15% овощей.'
+    },
+    ferret: {
+        label: 'Хорёк',
+        emoji: '🦦',
+        defaultWeight: 1.2,
+        note: 'Суперхищник: 4–8% веса, минимум углеводов.'
+    }
+};
+
 // ===== СОСТОЯНИЕ ПРИЛОЖЕНИЯ =====
-let catWeight = 4.5;
+let animalType = 'cat';
+let petWeight = 4.5;
 let portionPercent = 0.05;
 let healthCondition = 'healthy';
 let currentWeek = 1;
@@ -56,9 +79,9 @@ let history = [];
 // ===== РЕКОМЕНДАЦИИ ПО ЗАБОЛЕВАНИЯМ =====
 const healthRecommendations = {
     healthy: {
-        title: 'Здоровый кот',
+        title: 'Здоровый питомец',
         recommendations: [
-            'Суточная норма: 2-5% от веса кота (в среднем 5% для взрослых)',
+            'Суточная норма: 2-5% от веса питомца (корректируется под вид и активность)',
             '🥩 80% - Мясо и мышечные органы (включая сердце, желудки)',
             '🦴 10% - Мясокостные составляющие (шейки, головы, только СЫРЫЕ)',
             '🫀 10% - Секретирующие органы (печень 5%, почки/селезенка 5%)',
@@ -171,18 +194,18 @@ const healthRecommendations = {
 };
 
 // ===== БАЗА ЗНАНИЙ ДЛЯ ЧАТ-БОТА =====
-// Обновлено по информации с catnutrition.ru
+// Обновлено по общим ветеринарным рекомендациям
 const chatbotKnowledge = {
-    'сколько': 'Взрослые кошки должны получать 2-5% от своего веса в день (в среднем 5%). Котята, беременные/кормящие и высокоактивные кошки - 5-10%. Для кота весом 4.5 кг это около 225 граммов сырого мяса в день.',
-    'норма': 'Суточная норма: взрослые кошки 2-5% от веса, котята и активные кошки 5-10%. Корректируйте индивидуально: если кошка худеет - увеличивайте, полнеет - уменьшайте.',
+    'сколько': 'В среднем взрослым питомцам на натуральном рационе требуется 2-5% от веса в день. Активные и растущие животные могут получать 5-8%. Для расчета умножьте вес на процент и переведите в граммы.',
+    'норма': 'Суточная норма: 2-5% от веса, корректируйте по кондиции. Если питомец худеет — увеличивайте, полнеет — уменьшайте.',
     'пирамида': 'Пирамида питания: 60% мясо и мышечные органы, 20-40% мясокостные составляющие (только СЫРЫЕ!), 10-15% субпродукты (печень 5-10%), ~10% добавки (яйца, овощи до 2%).',
-    'запрещенные': 'Котам НЕЛЬЗЯ: вареные кости (смертельно опасны!), речная рыба сырая, крахмалистые продукты (каши, картофель, кукуруза), лук, чеснок, виноград, изюм, шоколад, кофеин, алкоголь, авокадо, ксилит.',
-    'частота': 'Рекомендуется кормить взрослых кошек 1-2 раза в день. Есть исследования о пользе кормления 1 раз в день для лучшего контроля аппетита и насыщения. Котят до 6 месяцев - 3-4 раза.',
-    'вода': 'Кот должен пить 40-60 мл воды на 1 кг веса в день. При натуральном питании потребность ниже, так как сырое мясо содержит ~70% влаги. Влажность пищи критически важна при МКБ и ХПН.',
-    'рыба': 'Морскую рыбу можно давать 1-2 раза в неделю. НИКОГДА не давайте сырую речную рыбу - риск паразитов! При МКБ и ХПН рыбу полностью исключают из-за высокого содержания фосфора и магния.',
+    'запрещенные': 'Запрещено: вареные кости (смертельно опасны!), сырая речная рыба, лук, чеснок, виноград, изюм, шоколад, кофеин, алкоголь, авокадо, ксилит. Ограничьте крахмалистые продукты.',
+    'частота': 'Частота кормления зависит от вида и возраста: обычно 1-2 раза в день для взрослых, 3-4 раза для подростков/детенышей.',
+    'вода': 'Норма воды — 40-60 мл на 1 кг веса в сутки. При натуральном питании потребность ниже, так как сырое мясо содержит ~70% влаги.',
+    'рыба': 'Морскую рыбу можно давать 1-2 раза в неделю. НИКОГДА не давайте сырую речную рыбу — риск паразитов! При заболеваниях почек и МКБ рыбу лучше исключить.',
     'печень': 'Печень - ценный субпродукт, но строго 5-10% рациона. Избыток вызывает гипервитаминоз А. При ХПН печень исключают из-за высокого содержания фосфора.',
     'кости': 'ВАЖНО: Только СЫРЫЕ мягкие кости (куриные шейки, крылья, спинки)! Вареные кости СМЕРТЕЛЬНО ОПАСНЫ - они становятся хрупкими и могут травмировать ЖКТ. Костная составляющая должна быть 20-40% рациона.',
-    'витамины': 'При сбалансированном натуральном питании дополнительные витамины обычно не нужны. Исключение - таурин (критически важен для кошек), омега-3. Баланс достигается не в одной миске, а на протяжении времени.',
+    'витамины': 'При сбалансированном натуральном питании дополнительные витамины обычно не нужны. Исключения: таурин для кошек, омега-3 по необходимости.',
     'переход': 'Переход на натуральное питание должен быть постепенным, в течение 7-14 дней. Начинайте с 25% нового корма, увеличивая долю каждые 2-3 дня. Не смешивайте натуралку с сухим кормом в одно кормление.',
     'хранение': 'Сырое мясо храните в морозилке порционно. Заморозка 3+ дня убивает паразитов. Перед кормлением размораживайте в холодильнике. Не храните размороженное мясо более 24 часов.',
     'хпн': 'При ХПН контролируйте ФОСФОР, а не белок! Используйте яичную скорлупу как источник кальция (фосфор-биндер). Максимальная гидратация критически важна. Исключите субпродукты, рыбу, печень.',
@@ -194,13 +217,14 @@ const chatbotKnowledge = {
 document.addEventListener('DOMContentLoaded', () => {
     initializeProducts();
     initializeDragAndDrop();
-    initializeCatWeight();
+    loadFromLocalStorage();
+    initializeAnimalType();
+    initializePetWeight();
     initializePortionPercent();
     initializeHealthCondition();
     initializeSupplements();
-    loadFromLocalStorage();
     updateAllDayStats();
-    console.log('🐱 Месячный конструктор рациона загружен!');
+    console.log('🐾 Конструктор питания животных загружен!');
 });
 
 // ===== СОЗДАНИЕ КАРТОЧЕК ПРОДУКТОВ =====
@@ -388,7 +412,7 @@ function autoBalanceDay(dayNumber) {
     const items = monthPlan[currentWeek][dayNumber];
     if (items.length === 0) return;
 
-    const targetWeight = catWeight * 1000 * portionPercent;
+    const targetWeight = petWeight * 1000 * portionPercent;
 
     // Цели: Мясо 80%, Кости 10%, Органы 10%
     const targetMeat = targetWeight * 0.8;
@@ -447,7 +471,7 @@ function removeProduct(dayNumber, itemId) {
 function updateDayStats(dayNumber) {
     const items = monthPlan[currentWeek][dayNumber];
     const totalWeight = items.reduce((sum, item) => sum + item.weight, 0);
-    const targetWeight = catWeight * 1000 * portionPercent;
+    const targetWeight = petWeight * 1000 * portionPercent;
 
     const dayCard = document.querySelector(`.day-card[data-day="${dayNumber}"]`);
     const totalWeightSpan = dayCard.querySelector('.total-weight');
@@ -510,11 +534,45 @@ function updateAllDayStats() {
 }
 
 // ===== НАСТРОЙКИ =====
-function initializeCatWeight() {
-    const weightInput = document.getElementById('cat-weight');
-    weightInput.value = catWeight;
+function updateAnimalUI() {
+    const profile = animalProfiles[animalType] || animalProfiles.cat;
+    const title = document.getElementById('page-title');
+    if (title && profile) {
+        title.textContent = `${profile.emoji} Конструктор питания: ${profile.label.toLowerCase()}`;
+    }
+}
+
+function initializeAnimalType() {
+    const animalSelect = document.getElementById('animal-type');
+    if (!animalSelect) return;
+
+    animalSelect.value = animalType;
+    animalSelect.addEventListener('change', (e) => {
+        animalType = e.target.value;
+        const profile = animalProfiles[animalType];
+        if (profile) {
+            petWeight = profile.defaultWeight;
+            const weightInput = document.getElementById('pet-weight');
+            if (weightInput) {
+                weightInput.value = petWeight;
+                weightInput.placeholder = profile.defaultWeight.toString();
+            }
+            addToHistory('update', `Выбран вид животного: ${profile.label}`);
+        }
+        updateAnimalUI();
+        updateAllDayStats();
+        saveToLocalStorage();
+    });
+
+    updateAnimalUI();
+}
+
+function initializePetWeight() {
+    const weightInput = document.getElementById('pet-weight');
+    if (!weightInput) return;
+    weightInput.value = petWeight;
     weightInput.addEventListener('input', (e) => {
-        catWeight = parseFloat(e.target.value) || 4.5;
+        petWeight = parseFloat(e.target.value) || 4.5;
         updateAllDayStats();
         saveToLocalStorage();
     });
@@ -548,11 +606,13 @@ function showRecommendations() {
     const content = document.getElementById('recommendations-content');
     const rec = healthRecommendations[healthCondition];
 
+    const profile = animalProfiles[animalType] || animalProfiles.cat;
     let html = `
         <div class="recommendation-card">
             <h4>📋 Состояние: ${rec.title}</h4>
-            <p>Вес кота: ${catWeight} кг | Целевой процент: ${(portionPercent * 100).toFixed(0)}%</p>
-            <p>Расчетная суточная норма: <strong>${(catWeight * 1000 * portionPercent).toFixed(0)} г</strong></p>
+            <p>Вид: ${profile.emoji} ${profile.label} | Вес: ${petWeight} кг | Норма: ${(portionPercent * 100).toFixed(0)}%</p>
+            <p>Расчетная суточная норма: <strong>${(petWeight * 1000 * portionPercent).toFixed(0)} г</strong></p>
+            <p><strong>Подсказка по виду:</strong> ${profile.note}</p>
         </div>
         
         <h3>✅ Рекомендации:</h3>
@@ -574,7 +634,7 @@ function showRecommendations() {
 
     // Общие рекомендации
     html += `
-        <h3>📚 Общие принципы видотипичного питания (по catnutrition.ru):</h3>
+        <h3>📚 Общие принципы видотипичного питания:</h3>
         <ul>
             <li>🥩 <strong>Пирамида питания:</strong> 60% мясо, 20-40% кости (СЫРЫЕ!), 10-15% субпродукты, ~10% добавки</li>
             <li>⚖️ <strong>Баланс не в одной миске, а на протяжении времени</strong> - чередуйте продукты в течение недели</li>
@@ -681,8 +741,9 @@ function showAlternatives(productId) {
 
 // ===== ЭКСПОРТ =====
 function exportToPDF() {
-    let content = `РАЦИОН ДЛЯ КОТА (Месячный план)\n`;
-    content += `Вес: ${catWeight} кг | Норма: ${(portionPercent * 100).toFixed(0)}% | Состояние: ${healthRecommendations[healthCondition].title}\n`;
+    const profile = animalProfiles[animalType] || animalProfiles.cat;
+    let content = `РАЦИОН ДЛЯ ПИТОМЦА (Месячный план)\n`;
+    content += `Вид: ${profile.label} | Вес: ${petWeight} кг | Норма: ${(portionPercent * 100).toFixed(0)}% | Состояние: ${healthRecommendations[healthCondition].title}\n`;
     content += `Дата создания: ${new Date().toLocaleDateString('ru-RU')}\n`;
     content += `Добавки: ${chosenSupplements.length > 0 ? chosenSupplements.map(id => supplements.find(s => s.id === id).name).join(', ') : 'Нет'}\n\n`;
     content += `${'='.repeat(50)}\n\n`;
@@ -716,7 +777,7 @@ function exportToPDF() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `cat-month-diet-${new Date().toISOString().split('T')[0]}.txt`;
+    a.download = `pet-month-diet-${new Date().toISOString().split('T')[0]}.txt`;
     a.click();
     URL.revokeObjectURL(url);
 
@@ -811,7 +872,8 @@ window.onclick = function (event) {
 // ===== ЛОКАЛЬНОЕ ХРАНИЛИЩЕ =====
 function saveToLocalStorage() {
     const data = {
-        catWeight,
+        animalType,
+        petWeight,
         portionPercent,
         healthCondition,
         monthPlan,
@@ -819,15 +881,17 @@ function saveToLocalStorage() {
         currentWeek,
         history
     };
-    localStorage.setItem('catDietPlanV3', JSON.stringify(data));
+    localStorage.setItem('petDietPlanV1', JSON.stringify(data));
 }
 
 function loadFromLocalStorage() {
-    const saved = localStorage.getItem('catDietPlanV3');
+    const saved = localStorage.getItem('petDietPlanV1') || localStorage.getItem('catDietPlanV3');
     if (saved) {
         try {
             const data = JSON.parse(saved);
-            catWeight = data.catWeight || 4.5;
+            animalType = data.animalType || 'cat';
+            const profile = animalProfiles[animalType] || animalProfiles.cat;
+            petWeight = data.petWeight || profile.defaultWeight;
             portionPercent = data.portionPercent || 0.05;
             healthCondition = data.healthCondition || 'healthy';
             monthPlan = data.monthPlan || monthPlan;
@@ -836,14 +900,23 @@ function loadFromLocalStorage() {
             history = data.history || [];
 
             // Обновляем UI
-            document.getElementById('cat-weight').value = catWeight;
-            document.getElementById('portion-percent').value = portionPercent;
-            document.getElementById('health-condition').value = healthCondition;
+            const animalSelect = document.getElementById('animal-type');
+            if (animalSelect) animalSelect.value = animalType;
+            const weightInput = document.getElementById('pet-weight');
+            if (weightInput) {
+                weightInput.value = petWeight;
+                weightInput.placeholder = profile.defaultWeight.toString();
+            }
+            const percentSelect = document.getElementById('portion-percent');
+            if (percentSelect) percentSelect.value = portionPercent;
+            const healthSelect = document.getElementById('health-condition');
+            if (healthSelect) healthSelect.value = healthCondition;
 
             initializeSupplements();
             changeWeek(currentWeek);
+            updateAnimalUI();
 
-            console.log('✅ Данные загружены из localStorage V3');
+            console.log('✅ Данные загружены из localStorage');
         } catch (e) {
             console.error('Ошибка загрузки данных:', e);
         }
@@ -877,4 +950,3 @@ window.toggleSupplement = toggleSupplement;
 window.filterProducts = filterProducts;
 
 console.log('🚀 Все функции обновлены и готовы к месячному планированию!');
-

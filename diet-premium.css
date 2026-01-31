@@ -96,14 +96,16 @@ body {
     align-items: center;
 }
 
-.cat-weight-container,
+.animal-type-container,
+.pet-weight-container,
 .health-condition-container {
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
 }
 
-.cat-weight-container label,
+.animal-type-container label,
+.pet-weight-container label,
 .health-condition-container label {
     font-size: 0.75rem;
     font-weight: 700;
@@ -112,7 +114,8 @@ body {
     letter-spacing: 0.05em;
 }
 
-.cat-weight-container input,
+.animal-type-container select,
+.pet-weight-container input,
 .health-condition-container select,
 #portion-percent {
     padding: 0.6rem 1rem;
@@ -126,7 +129,8 @@ body {
     outline: none;
 }
 
-.cat-weight-container input:focus,
+.animal-type-container select:focus,
+.pet-weight-container input:focus,
 .health-condition-container select:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px hsla(250, 80%, 60%, 0.15);
@@ -852,7 +856,8 @@ body {
         width: 100%;
     }
 
-    .cat-weight-container,
+    .animal-type-container,
+    .pet-weight-container,
     .health-condition-container {
         width: 100%;
     }
